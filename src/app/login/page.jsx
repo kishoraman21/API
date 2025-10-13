@@ -2,61 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { Activity, ArrowLeft, Loader2, LogIn } from "lucide-react";
-import { Client, Account, OAuthProvider, AppwriteException } from "appwrite";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-// --- Appwrite Configuration ---
-const APPWRITE_ENDPOINT = "https://fra.cloud.appwrite.io/v1";
-const APPWRITE_PROJECT_ID = "68e149670002f239da5a";
-
-// Initialize Appwrite client and services outside the component
-const client = new Client()
-  .setEndpoint(APPWRITE_ENDPOINT)
-  .setProject(APPWRITE_PROJECT_ID);
-const account = new Account(client);
-
-// --- Appwrite Utility Functions ---
-
-async function getCurrentUser() {
-  try {
-    // Fetches the user account if a valid session exists (checks cookies/storage)
-    const user = await account.get();
-    //debug
-    console.log("Appwrite User Loaded:", {
-      id: user.$id,
-      name: user.name,
-      email: user.email,
-      providers: user.prefs.providers, // Check if Google is listed
-    });
-    return user;
-  } catch (error) {
-    // If an error occurs (e.g., session not found), return null
-    return null;
-  }
-}
-
-// Initiates the OAuth login flow using correct Google scopes
-function createGoogleOAuthSession(successUrl, failureUrl) {
-  console.log("Appwrite: Redirecting to Google for OAuth...");
-
-  // Using Google's explicit required scopes to resolve the Error 400: invalid_scope
-  account
-    .createOAuth2Session({
-      provider: OAuthProvider.Google,
-      success: successUrl,
-      failure: failureUrl,
-      // These are the valid scopes required by Google for email and profile access
-      scopes: [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/userinfo.profile",
-        "openid",
-      ],
-    })
-    .catch((error) => {
-      // This catch handles errors before the redirect
-      console.error("Appwrite: Error initiating OAuth:", error);
-    });
-}
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const [user, setUser] = useState({
@@ -64,118 +11,45 @@ export default function LoginPage() {
     password: "",
   });
 
-  const onLogin = async (e) => {
-    e.preventDefault(); 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  const handleCredentialSignIn = async (event) => {
+    event.preventDefault();
     setIsSubmitting(true);
-    setError("");
+    setError(null); // Clear any previous errors
 
     try {
-      const response = await axios.post("/api/auth/login", {
+      const result = await signIn("credentials", {
         email: user.email,
         password: user.password,
+        redirect: false, // Prevents automatic redirect and allows for custom handling
       });
 
-      console.log("Login Successful", response.data);
-
-      // Redirect to dashboard on success
-    //   router.push("/dashboard");
-    window.location.href = "/dashboard";
-    } catch (error) {
-      console.error("Login failed:", error);
-
-      // Handle axios error response
-      if (error.response) {
-        // Server responded with error status
-        setError(
-          error.response.data?.error ||
-            error.response.data?.message ||
-            "Login failed"
-        );
-      } else if (error.request) {
-        // Request made but no response received
-        setError("Network error. Please check your connection.");
+      if (result.error) {
+        setError(result.error);
       } else {
-        // Something else happened
-        setError(error.message || "Login failed. Please try again.");
+        // Successful login, redirect to a protected page (e.g., dashboard)
+        router.push("/dashboard");
       }
+    } catch (e) {
+      setError("An unexpected error occurred.");
     } finally {
       setIsSubmitting(false);
     }
   };
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [sessionLoading, setSessionLoading] = useState(true);
-  const [error, setError] = useState("");
-  const router = useRouter();
 
-  // --- Session Check on Component Mount ---
-  useEffect(() => {
-    async function checkSessionAndRedirect() {
-      setSessionLoading(true);
-      const user = await getCurrentUser();
-      if (user) {
-        // User is already logged in, redirect to the dashboard
-        router.replace("/dashboard");
-      } else {
-        setSessionLoading(false);
-      }
-    }
-    checkSessionAndRedirect();
-  }, [router]);
-
-  // Handles the traditional email/password login
-  //   const onLogin = async (e) => {
-  //     e.preventDefault();
-  //     setIsSubmitting(true);
-  //     setError("");
-
-  //     try {
-  //       // 1. Create the session using email/password
-  //       await account.createEmailPasswordSession(
-  //         credentials.email,
-  //         credentials.password
-  //       );
-
-  //       // 2. Verify the session (optional, but good practice)
-  //       await account.get();
-
-  //       // 3. Navigate to the protected page
-  //       router.push("/dashboard");
-  //     } catch (err) {
-  //       console.error("Login failed:", err);
-  //       if (err instanceof AppwriteException) {
-  //         // Display user-friendly error from Appwrite
-  //         setError(err.message || "An unknown authentication error occurred.");
-  //       } else {
-  //         setError("Network error or failed to connect to service.");
-  //       }
-  //     } finally {
-  //       setIsSubmitting(false);
-  //     }
-  //   };
-
-  // Handles Google OAuth Sign In
-  const handleGoogleSignIn = () => {
-    console.log("gog");
-    setError("");
-    createGoogleOAuthSession(
-      "http://localhost:3000/dashboard", // Success redirect URL
-      "http://localhost:3000/login" // Failure redirect URL
-    );
+  //google auth
+  const googleLogin = () => {
+    signIn("google", {
+      callbackUrl: "/dashboard",
+    });
   };
 
   const handleBackToHome = () => {
     router.push("/");
   };
-
-  // --- Loading State UI ---
-  if (sessionLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
-        <p className="ml-3 text-lg">Checking session...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-slate-950 text-white overflow-hidden relative">
@@ -218,8 +92,8 @@ export default function LoginPage() {
 
             {/* Google Sign In Button */}
             <button
-              onClick={handleGoogleSignIn}
               disabled={isSubmitting}
+              onClick={googleLogin}
               className="w-full flex items-center justify-center space-x-3 px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-lg hover:bg-slate-800 transition-all mb-6 disabled:opacity-50"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -267,7 +141,7 @@ export default function LoginPage() {
               </div>
             )}
 
-            <form onSubmit={onLogin} className="space-y-5">
+            <form onSubmit={handleCredentialSignIn} className="space-y-5">
               {/* Email Field */}
               <div>
                 <label

@@ -7,17 +7,19 @@ export async function POST(req) {
 
     const { email, password } = reqBody;
 
-    const result = await loginUser(email, password); //holds the object token and apikey 
+    const result = await loginUser(email, password); //holds the object token and apikey
 
-    const { token } = result 
+    const { token, apikey, username } = result; //destructing the token
 
     const response = NextResponse.json({
       success: true,
       message: "Login successfull",
-      apiKey: result.apiKey,
+      apiKey: result.apikey,
     });
 
-    response.cookies.set("token", token, { httpOnly: true });
+    response.cookies.set("token", token,{ httpOnly: true });
+    response.cookies.set("apikey", apikey,{ httpOnly: true });
+    response.cookies.set("username", username,{ httpOnly: true });
 
     return response;
   } catch (error) {

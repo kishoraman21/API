@@ -2,20 +2,8 @@
 
 import React, { useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { Client, Account, OAuthProvider, AppwriteException } from 'appwrite';
 import { useRouter } from 'next/navigation';
 import axios from "axios";
-
-
-// --- Appwrite Configuration ---
-const APPWRITE_ENDPOINT = 'https://fra.cloud.appwrite.io/v1';
-const APPWRITE_PROJECT_ID = '68e149670002f239da5a';  
-
-// Initialize Appwrite client and services outside the component
-const client = new Client()
-  .setEndpoint(APPWRITE_ENDPOINT)
-  .setProject(APPWRITE_PROJECT_ID);
-const account = new Account(client);
 
 export default function SignUpPage() {
   const [user, setUser] = useState({
@@ -25,18 +13,6 @@ export default function SignUpPage() {
     confirmPassword: "",
   });
 
-
-    const onSignUp = async () => {
-    try {
-      const response = axios.post("/api/auth/signup", user);
-      console.log(response);
-
-      router.push("/login");
-    } catch (error) {
-      console.log("signup error", error.message);
-    }
-  };
-  
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
@@ -46,8 +22,8 @@ export default function SignUpPage() {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!user.name.trim()) {
-      newErrors.name = "Name is required";
+    if (!user.username.trim()) {
+      newErrors.username = "Username is required";
     }
     
     if (!user.email.trim()) {
@@ -70,75 +46,25 @@ export default function SignUpPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // const onSignUp = async () => {
-  //   if (!validateForm()) return;
+  const onSignUp = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
     
-  //   setIsLoading(true);
-  //   setErrors({}); 
-
-  //   try {
-  //     // 1. First, check if there's an active session and delete it
-  //     try {
-  //       await account.deleteSession('current');
-  //     } catch (err) {
-  //       // No active session, continue
-  //     }
-
-  //     // 2. Create the user account in Appwrite using 'unique()' ID
-  //     const newUser = await account.create(
-  //       'unique()', // Let Appwrite generate a unique ID
-  //       user.email,
-  //       user.password,
-  //       user.name 
-  //     );
-      
-  //     console.log("User created successfully:", newUser);
-      
-  //     // 3. Automatically log the user in by creating a session after successful registration.
-  //     const session = await account.createEmailPasswordSession(user.email, user.password);
-  //     console.log("Session created:", session);
-      
-  //     // 4. Redirect to the dashboard
-  //     router.push("/dashboard");
-
-  //   } catch (err) {
-  //     console.error("Appwrite Signup Error:", err);
-  //     let errorMessage = "An unknown error occurred during signup.";
-
-  //     if (err instanceof AppwriteException) {
-  //         // Check for common error codes
-  //         if (err.code === 409) {
-  //             errorMessage = "An account with this email already exists. Please sign in.";
-  //         } else if (err.code === 400) {
-  //             errorMessage = "Invalid input. Please check your information and try again.";
-  //         } else if (err.type === 'user_already_exists') {
-  //             errorMessage = "This email is already registered. Please sign in instead.";
-  //         } else {
-  //             errorMessage = err.message || "Signup failed. Please check your credentials.";
-  //         }
-  //     }
-  //     setErrors({ submit: errorMessage });
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  /**
-   * Initiates the Google OAuth login flow using compliant scopes.
-   */
-  const handleGoogleAuth = () => {
+    setIsLoading(true);
     setErrors({});
-    account.createOAuth2Session({
-      provider: OAuthProvider.Google,
-      success: 'http://localhost:3000/dashboard',
-      failure: 'http://localhost:3000/signup',
-      // Using explicit Google scopes to avoid 'invalid_scope' error
-      scopes: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile', 'openid']
-    })
-    .catch(err => {
-        console.error("Google OAuth initiation error:", err);
-        setErrors({ submit: "Failed to initiate Google login." });
-    });
+
+    try {
+      const response = await axios.post("/api/auths/signup", user);
+      console.log("Signup successful:", response.data);
+      router.push("/login");
+    } catch (error) {
+      console.log("Signup error:", error.message);
+      const errorMessage = error.response?.data?.message || error.message || "Signup failed. Please try again.";
+      setErrors({ submit: errorMessage });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleLoginClick = (e) => {
@@ -164,7 +90,6 @@ export default function SignUpPage() {
         <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl p-8 shadow-2xl">
           {/* Google Sign In Button */}
           <button
-            onClick={handleGoogleAuth}
             disabled={isLoading}
             className="w-full bg-slate-800 hover:bg-slate-750 text-white py-3 px-4 rounded-xl flex items-center justify-center gap-3 transition-all duration-200 mb-6 border border-slate-700 disabled:opacity-50"
           >
@@ -193,22 +118,22 @@ export default function SignUpPage() {
           )}
 
           {/* Form Fields */}
-          <form onSubmit={(e) => { e.preventDefault(); onSignUp(); }}>
-              {/* Name Input */}
+          <form onSubmit={onSignUp}>
+              {/* Username Input */}
               <div className="mb-4">
-                <label htmlFor="name" className="block text-slate-300 text-sm font-medium mb-2">
+                <label htmlFor="username" className="block text-slate-300 text-sm font-medium mb-2">
                   Full Name
                 </label>
                 <input
-                  id="name"
+                  id="username"
                   type="text"
-                  value={user.name}
+                  value={user.username}
                   onChange={(e) => setUser({ ...user, username: e.target.value })}
                   placeholder="username"
                   disabled={isLoading}
                   className="w-full bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent placeholder-slate-500 transition-all"
                 />
-                {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
+                {errors.username && <p className="text-red-400 text-xs mt-1">{errors.username}</p>}
               </div>
 
               {/* Email Input */}

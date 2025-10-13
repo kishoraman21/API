@@ -29,8 +29,12 @@ export async function signUpUser(username, email, password) {
 
 export async function loginUser(email, password) {
   await connect();
+  console.log("DB connected")
 
   const user = await User.findOne({ email });
+  const username = user?.username;
+  console.log(username)
+  console.log("User fetched", user)
   if (!user) throw new Error("User not found ");
 
   const matchPass = await bcrypt.compare(password, user.password);
@@ -38,5 +42,5 @@ export async function loginUser(email, password) {
 
   const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: "1d" }); //token data ,then secret key and last expiry
 
-  return { token, apiKey: user.apiKey };
+  return { token, apikey: user.apikey , username : username};
 }
