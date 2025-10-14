@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Activity, ArrowLeft, Loader2, LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import {toast} from "react-hot-toast"
 
 export default function LoginPage() {
   const [user, setUser] = useState({
@@ -24,14 +25,19 @@ export default function LoginPage() {
       const result = await signIn("credentials", {
         email: user.email,
         password: user.password,
-        redirect: false, // Prevents automatic redirect and allows for custom handling
+        redirect: false, 
       });
 
       if (result.error) {
         setError(result.error);
+        toast.error(result.error)
+
       } else {
         // Successful login, redirect to a protected page (e.g., dashboard)
         router.push("/dashboard");
+        toast.success("User logged in successfully!")
+      
+
       }
     } catch (e) {
       setError("An unexpected error occurred.");

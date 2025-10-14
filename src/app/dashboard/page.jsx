@@ -34,6 +34,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession , signOut} from "next-auth/react";
+import {toast } from "react-hot-toast"
 
 const APIAnalyticsDashboard = () => {
   const router = useRouter();
@@ -152,6 +153,7 @@ const APIAnalyticsDashboard = () => {
 
   const handleLogout = () => {
      signOut({ callbackUrl: '/' });
+     toast.success("User Logged out successfully", {duration:1000})
   };
 
   const handleCopyApiKey = async () => {

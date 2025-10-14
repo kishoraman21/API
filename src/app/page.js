@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import {toast} from "react-hot-toast"
 
 import {
   Activity,
@@ -45,6 +46,8 @@ const LandingPage = () => {
     };
     generateParticles();
   }, []);
+
+  
 
   const features = [
     {
@@ -167,6 +170,7 @@ const LandingPage = () => {
   ];
 
   const onGEtStarted = ()=>{
+    toast.loading("Redirecting to Login" , {duration: 1000})
     router.push("/login")
   }
 

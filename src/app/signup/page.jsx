@@ -3,7 +3,9 @@
 import React, { useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react'; 
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function SignUpPage() {
   const [user, setUser] = useState({
@@ -19,11 +21,11 @@ export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const validateForm = () => {
+const validateForm = () => {
     const newErrors = {};
     
     if (!user.username.trim()) {
-      newErrors.username = "Username is required";
+      newErrors.username = "Full name is required";
     }
     
     if (!user.email.trim()) {
@@ -55,16 +57,33 @@ export default function SignUpPage() {
     setErrors({});
 
     try {
-      const response = await axios.post("/api/auths/signup", user);
-      console.log("Signup successful:", response.data);
+      // Use your custom API endpoint for creating the user
+      await axios.post("/api/auths/signup", {
+        username: user.username,
+        email: user.email,
+        password: user.password,
+      });
+      const successMsg = "Signup successful, redirecting to login..."
+      toast.success(successMsg);
+      console.log(successMsg)
+      
       router.push("/login");
     } catch (error) {
-      console.log("Signup error:", error.message);
+      console.error("Signup error:", error);
       const errorMessage = error.response?.data?.message || error.message || "Signup failed. Please try again.";
       setErrors({ submit: errorMessage });
+      toast.error(errorMessage)
     } finally {
       setIsLoading(false);
     }
+  };
+  
+  const handleGoogleSignIn = () => {
+    // Trigger the NextAuth.js Google sign-in flow
+    signIn('google', {
+      callbackUrl:"/login"
+    });
+    
   };
 
   const handleLoginClick = (e) => {
@@ -90,6 +109,7 @@ export default function SignUpPage() {
         <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl p-8 shadow-2xl">
           {/* Google Sign In Button */}
           <button
+            onClick={handleGoogleSignIn}
             disabled={isLoading}
             className="w-full bg-slate-800 hover:bg-slate-750 text-white py-3 px-4 rounded-xl flex items-center justify-center gap-3 transition-all duration-200 mb-6 border border-slate-700 disabled:opacity-50"
           >
@@ -111,11 +131,11 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          {errors.submit && (
+          {/* {errors.submit && (
             <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
               <p className="text-red-400 text-sm">{errors.submit}</p>
             </div>
-          )}
+          )} */}
 
           {/* Form Fields */}
           <form onSubmit={onSignUp}>
@@ -204,43 +224,33 @@ export default function SignUpPage() {
                 </div>
                 {errors.confirmPassword && <p className="text-red-400 text-xs mt-1">{errors.confirmPassword}</p>}
               </div>
-          
+
               {/* Sign Up Button */}
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 shadow-lg shadow-orange-600/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                className="w-full py-3.5 flex items-center justify-center bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 rounded-lg font-semibold text-slate-900 transition-all shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <>
                     <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Creating Account...
+                    Signing Up...
                   </>
                 ) : (
-                  "Sign Up"
+                  <>
+                    Sign Up
+                  </>
                 )}
               </button>
           </form>
 
-          {/* Login Link */}
-          <div className="text-center mt-6">
-            <span className="text-slate-400 text-sm">Already have an account? </span>
-            <a 
-              href="/login" 
-              onClick={handleLoginClick}
-              className="text-orange-500 hover:text-orange-400 text-sm font-medium transition-colors cursor-pointer"
-            >
-              Sign in
+          {/* Already have an account */}
+          <p className="text-sm text-slate-400 text-center mt-6">
+            Already have an account?{" "}
+            <a href="/login" onClick={handleLoginClick} className="text-orange-400 hover:text-orange-300 font-medium transition-colors">
+              Log In
             </a>
-          </div>
-        </div>
-
-        {/* Secure Connection Badge */}
-        <div className="text-center mt-6 flex items-center justify-center gap-2 text-slate-500 text-sm">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-          </svg>
-          Secure, encrypted connection
+          </p>
         </div>
       </div>
     </div>
