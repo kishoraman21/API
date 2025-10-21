@@ -1,14 +1,9 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import {toast} from "react-hot-toast"
-
+import React, { useState } from "react";
 import {
   Activity,
-  Zap,
   Shield,
   BarChart3,
-  TrendingUp,
   Clock,
   Eye,
   Code,
@@ -18,36 +13,27 @@ import {
   Twitter,
   Linkedin,
   ChevronDown,
+  MessageCircle,
 } from "lucide-react";
+import dashboard from "./dashboard.png";
+import setup from "./sdksetup.png";
+import logo from "./logo2.svg";
 
-const LandingPage = () => {
-  const [scrollY, setScrollY] = useState(0);
-  const [particles, setParticles] = useState([]);
+export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const router = useRouter()
-  useEffect(() => {
-    const generateParticles = () => {
-      const newParticles = Array.from({ length: 30 }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 6 + 2,
-        duration: Math.random() * 20 + 15,
-        delay: Math.random() * 5,
-      }));
-      setParticles(newParticles);
-    };
-    generateParticles();
-  }, []);
-
-  
+  // Smooth scroll function
+  const smoothScrollTo = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+    setMobileMenuOpen(false);
+  };
 
   const features = [
     {
@@ -92,40 +78,46 @@ const LandingPage = () => {
     {
       name: "Starter",
       price: "Free",
-      description: "Perfect for side projects",
+      description: "Ideal for personal or side projects",
       features: [
-        "Up to 500 requests/month",
+        "Up to 1,000 requests/month",
         "7-day log retention",
-        "Basic analytics",
-        "Email support",
+        "Basic API usage analytics",
+        "Access to dashboard metrics",
+        "Community support",
       ],
+      available: true,
     },
     {
       name: "Pro",
-      price: "$29",
-      description: "For growing teams",
+      price: "$29 / month",
+      description: "Best for growing developers or small teams",
       features: [
         "Up to 500,000 requests/month",
         "90-day log retention",
-        "Advanced analytics",
-        "Priority support",
-        "Custom alerts",
-        "Team collaboration",
+        "Advanced analytics & visual insights",
+        "Real-time usage updates every minute",
+        "Email notifications for API errors or downtime",
+        "Priority email support",
+        "Team collaboration (multiple API keys)",
       ],
       popular: true,
+      available: false,
     },
     {
       name: "Enterprise",
       price: "Custom",
-      description: "For large organizations",
+      description: "For large-scale applications and organizations",
       features: [
         "Unlimited requests",
         "Unlimited log retention",
-        "Custom integrations",
-        "Dedicated support",
-        "SLA guarantee",
-        "On-premise option",
+        "Custom integrations and alerts (Slack, Webhooks, Email)",
+        "Dedicated account manager & 24/7 support",
+        "Custom SLAs and uptime guarantees",
+        "On-premise or private cloud deployment",
+        "Audit logs & compliance tools",
       ],
+      available: false,
     },
   ];
 
@@ -162,76 +154,32 @@ const LandingPage = () => {
     },
   ];
 
-  const stats = [
-    { value: "10M+", label: "API Calls Tracked" },
-    { value: "99.9%", label: "Uptime" },
-    { value: "500+", label: "Happy Customers" },
-    { value: "<50ms", label: "Avg Latency" },
-  ];
+  const handleGetStarted = () => {
+    window.location.href = "/login";
+  };
 
-  const onGEtStarted = ()=>{
-    toast.loading("Redirecting to Login" , {duration: 1000})
-    router.push("/login")
-  }
+  const handleContactUs = () => {
+    window.location.href = "/contactus";
+  };
+  const docsPage = () => {
+    window.location.href = "/docs";
+  };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white overflow-hidden">
-      {/* Grid Background with Animated Particles */}
-      <div className="fixed inset-0 z-0">
+    <div className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black text-white overflow-hidden font-['Outfit']">
+      {/* Dot Pattern Background */}
+      <div className="fixed inset-0 z-0 opacity-40">
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `
-            linear-gradient(to right, rgba(51, 65, 85, 0.3) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(51, 65, 85, 0.3) 1px, transparent 1px)
-          `,
-            backgroundSize: "80px 80px",
+            backgroundImage: `radial-gradient(circle, rgba(255, 255, 255, 0.8) 1px, transparent 1px)`,
+            backgroundSize: "40px 40px",
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950/95 to-slate-950" />
-
-        {/* Animated Particles */}
-        {particles.map((particle) => (
-          <div
-            key={particle.id}
-            className="absolute rounded-full opacity-30"
-            style={{
-              left: `${particle.x}%`,
-              top: `${particle.y}%`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              background: `radial-gradient(circle, rgba(249, 115, 22, 0.6), rgba(239, 68, 68, 0.3))`,
-              animation: `float ${particle.duration}s ease-in-out infinite`,
-              animationDelay: `${particle.delay}s`,
-            }}
-          />
-        ))}
       </div>
 
-      <style jsx>{`
-        @keyframes float {
-          0%,
-          100% {
-            transform: translate(0, 0) scale(1);
-          }
-          33% {
-            transform: translate(30px, -30px) scale(1.1);
-          }
-          66% {
-            transform: translate(-20px, 20px) scale(0.9);
-          }
-        }
-
-        @keyframes slideIn {
-          from {
-            transform: scaleX(0);
-            opacity: 0;
-          }
-          to {
-            transform: scaleX(1);
-            opacity: 1;
-          }
-        }
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
         @keyframes fadeInUp {
           from {
@@ -255,6 +203,15 @@ const LandingPage = () => {
           }
         }
 
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+
         .animate-fade-in-up {
           animation: fadeInUp 0.8s ease-out forwards;
         }
@@ -263,9 +220,14 @@ const LandingPage = () => {
           animation: scaleIn 0.6s ease-out forwards;
         }
 
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+
         .nav-link {
           position: relative;
           display: inline-block;
+          cursor: pointer;
         }
 
         .nav-link::after {
@@ -312,155 +274,251 @@ const LandingPage = () => {
           animation: fadeInUp 0.6s ease-out forwards;
         }
 
-        .feature-card:nth-child(1) {
-          animation-delay: 0.1s;
-        }
-        .feature-card:nth-child(2) {
-          animation-delay: 0.2s;
-        }
-        .feature-card:nth-child(3) {
-          animation-delay: 0.3s;
-        }
-        .feature-card:nth-child(4) {
-          animation-delay: 0.4s;
-        }
-        .feature-card:nth-child(5) {
-          animation-delay: 0.5s;
-        }
-        .feature-card:nth-child(6) {
-          animation-delay: 0.6s;
-        }
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.2s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+        .feature-card:nth-child(4) { animation-delay: 0.4s; }
+        .feature-card:nth-child(5) { animation-delay: 0.5s; }
+        .feature-card:nth-child(6) { animation-delay: 0.6s; }
 
         .pricing-card {
           opacity: 0;
           animation: scaleIn 0.6s ease-out forwards;
         }
 
-        .pricing-card:nth-child(1) {
-          animation-delay: 0.1s;
+        .pricing-card:nth-child(1) { animation-delay: 0.1s; }
+        .pricing-card:nth-child(2) { animation-delay: 0.2s; }
+        .pricing-card:nth-child(3) { animation-delay: 0.3s; }
+
+        html {
+          scroll-behavior: smooth;
         }
-        .pricing-card:nth-child(2) {
-          animation-delay: 0.2s;
+
+        .hamburger {
+          width: 24px;
+          height: 20px;
+          position: relative;
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
         }
-        .pricing-card:nth-child(3) {
-          animation-delay: 0.3s;
+
+        .hamburger span {
+          width: 100%;
+          height: 2px;
+          background-color: white;
+          transition: all 0.3s ease;
+          display: block;
+        }
+
+        .hamburger.open span:nth-child(1) {
+          transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.open span:nth-child(2) {
+          opacity: 0;
+        }
+
+        .hamburger.open span:nth-child(3) {
+          transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .mobile-menu {
+          transform: translateX(100%);
+          transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu.open {
+          transform: translateX(0);
+        }
+
+        @media (max-width: 768px) {
+          body {
+            overflow-x: hidden;
+          }
         }
       `}</style>
 
       {/* Navigation */}
-      <nav className="relative z-10 border-b border-slate-800/50 backdrop-blur-sm bg-slate-950/80">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      <nav className="relative z-10 bg-black/80 backdrop-blur-md border-b border-gray-800/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3 animate-fade-in-up">
-              <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
-                <Activity className="w-6 h-6 text-white" />
+            {/* Logo */}
+            <div className="flex items-center space-x-2 animate-fade-in-up">
+              {/* <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded flex items-center justify-center">
+                <Activity className="w-5 h-5 text-black" />
+              </div> */}
+              <div className="w-11 h-12 bg-transparent rounded flex items-center justify-center">
+                <img src={logo.src} alt="ApiDeck Logo" />
               </div>
-              <span className="text-xl font-bold">API Analytics</span>
+
+              <span className="text-base sm:text-lg font-bold text-white tracking-tight">
+                ApiDeck
+              </span>
             </div>
 
+            {/* Desktop Navigation Links */}
             <div
-              className="flex items-center space-x-5 animate-fade-in-up"
+              className="hidden md:flex items-center space-x-8 animate-fade-in-up"
               style={{ animationDelay: "0.2s" }}
             >
-              <div className="hidden md:flex items-center space-x-8">
-                <a
-                  href="#pricing"
-                  className="nav-link text-slate-300 hover:text-white transition-colors"
-                >
-                  Pricing
-                </a>
-                <a
+              <div className="flex items-center space-x-8">
+                {/* <a
                   href="#"
-                  className="nav-link text-slate-300 hover:text-white transition-colors mx-1"
+                  className="nav-link text-gray-300 hover:text-white transition-colors text-sm font-medium uppercase tracking-wide"
                 >
-                  Docs
-                </a>
-                <a
-                  href="/contactus"
-                  className="nav-link text-slate-300 hover:text-white transition-colors mx-1"
+                  DOCS
+                </a> */}
+                <button
+                  onClick={() => smoothScrollTo("pricing")}
+                  className="nav-link text-gray-300 hover:text-white transition-colors text-sm font-medium uppercase tracking-wide"
                 >
-                  Support
-                </a>
+                  PRICING
+                </button>
+                <button
+                  onClick={docsPage}
+                  className="nav-link text-gray-300 hover:text-white transition-colors text-sm font-medium uppercase tracking-wide"
+                >
+                  DOCS
+                </button>
+                <button
+                  onClick={handleContactUs}
+                  className="nav-link text-gray-300 hover:text-white transition-colors text-sm font-medium uppercase tracking-wide"
+                >
+                  SUPPORT
+                </button>
               </div>
-              <button 
-              onClick= {onGEtStarted}
-              className="get-started-btn px-6 py-2.5 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 rounded-lg font-medium transition-all hover:scale-105 shadow-lg shadow-orange-500/25">
-                Get Started
+
+              {/* Get Started Button */}
+              <button
+                onClick={handleGetStarted}
+                className="get-started-btn px-5 py-2 bg-orange-500 text-black rounded font-semibold text-sm uppercase tracking-wide transition-all hover:scale-105 shadow-lg shadow-yellow-400/20"
+              >
+                GET STARTED
               </button>
             </div>
+
+            {/* Mobile Menu Button & Get Started */}
+            <div className="flex md:hidden items-center space-x-4">
+              <button
+                onClick={handleGetStarted}
+                className="get-started-btn px-4 py-2 bg-orange-500 text-black rounded font-semibold text-xs uppercase tracking-wide transition-all hover:scale-105 shadow-lg shadow-yellow-400/20"
+              >
+                START
+              </button>
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className={`hamburger ${mobileMenuOpen ? "open" : ""}`}
+                aria-label="Toggle menu"
+              >
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <div
+          className={`mobile-menu ${
+            mobileMenuOpen ? "open" : ""
+          } fixed top-[73px] right-0 w-64 h-[calc(100vh-73px)] bg-gray-950 border-l border-gray-800 md:hidden z-50 shadow-2xl`}
+        >
+          <div className="flex flex-col p-6 space-y-6">
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                setMobileMenuOpen(false);
+              }}
+              className="text-gray-300 hover:text-white transition-colors text-base font-medium uppercase tracking-wide py-2 border-b border-gray-700"
+            >
+              DOCS
+            </a>
+            <button
+              onClick={() => smoothScrollTo("pricing")}
+              className="text-left text-gray-300 hover:text-white transition-colors text-base font-medium uppercase tracking-wide py-2 border-b border-gray-700"
+            >
+              PRICING
+            </button>
+            <button
+              onClick={() => {
+                handleContactUs();
+                setMobileMenuOpen(false);
+              }}
+              className="text-left text-gray-300 hover:text-white transition-colors text-base font-medium uppercase tracking-wide py-2 border-b border-gray-700"
+            >
+              SUPPORT
+            </button>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative z-10 pt-20 pb-32">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="relative z-10 pt-20 sm:pt-32 pb-20 sm:pb-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center space-x-2 px-4 py-2 bg-orange-500/10 border border-orange-500/20 rounded-full mb-8 backdrop-blur-sm animate-fade-in-up">
-              <span className="text-sm text-orange-400 font-medium">
-                Now with real-time analytics
-              </span>
-            </div>
-
             <h1
-              className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-fade-in-up"
+              className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 leading-tight animate-fade-in-up text-white"
               style={{ animationDelay: "0.1s" }}
             >
               Monitor Your APIs
-              <span className="block bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
-                Like Never Before
-              </span>
+              <span className="block text-orange-500">Like Never Before</span>
             </h1>
 
             <p
-              className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-in-up"
+              className="text-lg sm:text-xl text-slate-300 mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-in-up px-4"
               style={{ animationDelay: "0.2s" }}
             >
-              Track every API call, analyze performance metrics, and get
-              actionable insights with our powerful monitoring platform.
+              Monitor performance, track uptime, and detect API issues before
+              your users do — all from one powerful dashboard.
             </p>
 
             <div
               className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-fade-in-up"
               style={{ animationDelay: "0.3s" }}
-            >
-              <button className="group px-8 py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 rounded-lg font-semibold text-lg transition-all hover:scale-105 flex items-center space-x-2 shadow-lg shadow-orange-500/25">
-                <span>Start Free Trial</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
+            ></div>
           </div>
         </div>
 
-        {/* Floating Dashboard Preview */}
+        {/* Dashboard Preview Images - Stacked Layout */}
         <div
-          className="max-w-6xl mx-auto px-6 mt-10 animate-fade-in-up"
+          className="max-w-6xl mx-auto px-4 sm:px-6 mt-10 animate-fade-in-up"
           style={{ animationDelay: "0.4s" }}
         >
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl blur-3xl opacity-20" />
-            <div className="relative bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl p-4 shadow-2xl hover:scale-[1.02] transition-transform duration-500">
-              <div className="bg-slate-950 rounded-lg overflow-hidden border border-slate-800">
-                <div className="flex items-center space-x-2 px-4 py-3 bg-slate-900 border-b border-slate-800">
-                  <div className="flex space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500" />
-                    <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                    <div className="w-3 h-3 rounded-full bg-green-500" />
-                  </div>
-                  <div className="flex-1 text-center text-sm text-slate-500">
-                    dashboard.apianalytics.io
-                  </div>
+          <div className="space-y-6 sm:space-y-8">
+            {/* Code Setup Image - Square/Portrait */}
+            <div className="relative group mx-auto max-w-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-2xl blur-3xl opacity-50 group-hover:opacity-70 transition-opacity" />
+              <div className="relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl hover:scale-[1.01] transition-transform duration-500">
+                <div className="bg-gray-800/30 flex items-center justify-center">
+                  <img
+                    width="400"
+                    height="400"
+                    loading="lazy"
+                    src={setup.src}
+                    alt="SnapAlert Setup Code"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <div className="p-6 space-y-4">
-                  <div className="grid grid-cols-4 gap-4">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div
-                        key={i}
-                        className="h-24 bg-slate-800/50 rounded-lg border border-slate-700 animate-pulse"
-                      />
-                    ))}
-                  </div>
-                  <div className="h-64 bg-slate-800/50 rounded-lg border border-slate-700 animate-pulse" />
+              </div>
+            </div>
+
+            {/* Dashboard Settings Image - Wide Rectangle */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-2xl blur-3xl opacity-50 group-hover:opacity-70 transition-opacity" />
+              <div className="relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl hover:scale-[1.01] transition-transform duration-500">
+                <div className="bg-gray-800/30 flex items-center justify-center">
+                  <img
+                    width="500"
+                    height="600"
+                    loading="lazy"
+                    src={dashboard.src}
+                    alt="SnapAlert Dashboard Settings"
+                    className="w-full h-full relative object-cover p-4  "
+                  />
                 </div>
               </div>
             </div>
@@ -471,34 +529,34 @@ const LandingPage = () => {
       {/* Features Section */}
       <section
         id="features"
-        className="relative z-10 py-32 border-t border-slate-800/50"
+        className="relative z-10 py-20 sm:py-32 border-t border-gray-800/50"
       >
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16 animate-fade-in-up">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 px-4">
               Everything You Need to Monitor Your APIs
             </h2>
-            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto px-4">
               Powerful features designed to give you complete visibility and
               control over your API infrastructure.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {features.map((feature, i) => (
               <div
                 key={i}
-                className="feature-card group relative bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-xl p-8 hover:border-orange-500/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/10"
+                className="feature-card group relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 sm:p-8 hover:border-white/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-white/10"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-red-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative">
-                  <div className="w-12 h-12 bg-orange-500/10 rounded-lg flex items-center justify-center mb-4 text-orange-400 group-hover:bg-orange-500/20 transition-all duration-300 group-hover:scale-110">
+                  <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center mb-4 text-white group-hover:bg-white/20 transition-all duration-300 group-hover:scale-110">
                     {feature.icon}
                   </div>
-                  <h3 className="text-xl font-semibold mb-3">
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3">
                     {feature.title}
                   </h3>
-                  <p className="text-slate-400 leading-relaxed">
+                  <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
@@ -511,81 +569,95 @@ const LandingPage = () => {
       {/* Pricing Section */}
       <section
         id="pricing"
-        className="relative z-10 py-32 border-t border-slate-800/50"
+        className="relative z-10 py-20 sm:py-32 border-t border-gray-800/50"
       >
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16 animate-fade-in-up">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 px-4">
               Simple, Transparent Pricing
             </h2>
-            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              Choose the plan that fits your needs. All plans include a 14-day
-              free trial.
+            <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto px-4">
+              Choose the plan that fits your needs. Take a free trial now.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
             {pricingPlans.map((plan, i) => {
-              // MODIFIED: Include the last plan's name here (e.g., 'Business' or 'Enterprise')
-              const isComingSoon =
-                plan.name === "Pro" || plan.name === "Enterprise";
+              const isPopular = plan.popular;
+              const isComingSoon = !plan.available;
 
-              // Determine card classes: ALL cards now use the orange border style
               const cardClasses = `
-                    pricing-card relative bg-slate-900 backdrop-blur-sm border rounded-xl p-8 
-                    transition-all duration-300 group
-                    border-orange-500 scale-105 shadow-lg shadow-orange-500/20
-                    hover:scale-[1.07] hover:shadow-xl
-                `;
+                pricing-card relative backdrop-blur-sm border rounded-xl p-6 sm:p-8 
+                transition-all duration-300 group flex flex-col
+                ${
+                  isPopular
+                    ? "border-white sm:scale-105 shadow-lg shadow-white/20 hover:scale-[1.07] hover:shadow-xl"
+                    : "border-gray-800 hover:border-gray-700 hover:scale-105"
+                }
+                ${isComingSoon ? "bg-gray-900/30" : "bg-gray-900/50"}
+              `;
 
-              // Determine button text
-              const buttonText = isComingSoon
-                ? "Coming Soon"
-                : plan.price === "Custom"
-                ? "Contact Sales"
-                : "Get Started Free";
+              const buttonText =
+                plan.price === "Custom" ? "Contact Sales" : "Get Started Free";
 
               return (
                 <div key={i} className={cardClasses}>
-                  {/* COMING SOON OVERLAY (for Pro and Business) */}
+                  {/* Coming Soon Badge */}
                   {isComingSoon && (
-                    <div className="absolute inset-0 bg-slate-950/70 rounded-xl z-20 pointer-events-none">
-                      {/* Optional: Subtle visual effect inside the overlay if needed */}
+                    <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-20 animate-float">
+                      COMING SOON
                     </div>
                   )}
 
-                  {/* Card Content */}
-                  <div className="mb-6 relative z-10">
-                    <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                    <p className="text-slate-400 text-sm mb-4">
+                  {/* Blur overlay for coming soon cards */}
+                  {isComingSoon && (
+                    <div className="absolute inset-0 backdrop-blur-[2px] bg-gray-950/40 rounded-xl z-10 pointer-events-none" />
+                  )}
+
+                  <div
+                    className={`mb-6 relative ${isComingSoon ? "z-0" : "z-10"}`}
+                  >
+                    <h3 className="text-xl sm:text-2xl font-bold mb-2">
+                      {plan.name}
+                    </h3>
+                    <p className="text-gray-400 text-sm mb-4">
                       {plan.description}
                     </p>
                     <div className="flex items-baseline">
-                      <span className="text-5xl font-bold">{plan.price}</span>
+                      <span className="text-4xl sm:text-5xl font-bold">
+                        {plan.price}
+                      </span>
                       {plan.price !== "Custom" && plan.price !== "Free" && (
-                        <span className="text-slate-400 ml-2">/month</span>
+                        <span className="text-gray-400 ml-2">/month</span>
                       )}
                     </div>
                   </div>
 
-                  <ul className="space-y-4 mb-8 relative z-10">
+                  <ul
+                    className={`space-y-3 sm:space-y-4 mb-8 flex-grow relative ${
+                      isComingSoon ? "z-0" : "z-10"
+                    }`}
+                  >
                     {plan.features.map((feature, j) => (
                       <li key={j} className="flex items-start space-x-3">
-                        <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-slate-300">{feature}</span>
+                        <Check className="w-5 h-5 text-white flex-shrink-0 mt-0.5" />
+                        <span className="text-sm sm:text-base text-gray-300">
+                          {feature}
+                        </span>
                       </li>
                     ))}
                   </ul>
 
                   <button
-                    className={`w-full py-3 rounded-lg font-semibold transition-all relative z-10 ${
+                    onClick={!isComingSoon ? handleGetStarted : undefined}
+                    disabled={isComingSoon}
+                    className={`w-full py-3 rounded-lg font-semibold transition-all relative mt-auto text-sm sm:text-base ${
                       isComingSoon
-                        ? "bg-slate-700 cursor-not-allowed text-slate-300" // Disabled look
-                        : plan.popular
-                        ? "bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white shadow-lg shadow-orange-500/25 hover:scale-105"
-                        : "bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 hover:scale-105"
+                        ? "bg-gray-700 text-gray-500 cursor-not-allowed z-0"
+                        : isPopular
+                        ? "bg-white hover:bg-gray-100 text-gray-950 hover:scale-105 z-10"
+                        : "bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hover:scale-105 z-10"
                     }`}
-                    disabled={isComingSoon} // Disable the button
                   >
                     {buttonText}
                   </button>
@@ -599,14 +671,14 @@ const LandingPage = () => {
       {/* FAQ Section */}
       <section
         id="faq"
-        className="relative z-10 py-32 border-t border-slate-800/50"
+        className="relative z-10 py-20 sm:py-32 border-t border-slate-800/50"
       >
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16 animate-fade-in-up">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 px-4">
               Frequently Asked Questions
             </h2>
-            <p className="text-xl text-slate-400">
+            <p className="text-lg sm:text-xl text-slate-400 px-4">
               Everything you need to know about API Analytics
             </p>
           </div>
@@ -615,7 +687,6 @@ const LandingPage = () => {
             {faqs.map((faq, i) => (
               <div
                 key={i}
-                // Make the container a 'group' so hover effects can apply to children
                 className="group backdrop-blur-sm border-b border-slate-800/50 overflow-hidden transition-all duration-300 animate-fade-in-up"
                 style={{
                   animationDelay: `${i * 0.1}s`,
@@ -623,9 +694,9 @@ const LandingPage = () => {
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full px-6 py-5 flex items-center justify-between text-left transition-colors border-l-4 border-transparent group-hover:border-orange-500"
+                  className="w-full px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between text-left transition-colors border-l-4 border-transparent group-hover:border-white"
                 >
-                  <span className="font-medium text-lg text-white pr-8">
+                  <span className="font-medium text-base sm:text-lg text-white pr-6 sm:pr-8">
                     {faq.question}
                   </span>
                   <ChevronDown
@@ -639,7 +710,7 @@ const LandingPage = () => {
                     openFaq === i ? "max-h-96" : "max-h-0"
                   }`}
                 >
-                  <div className="px-6 pb-5 text-slate-400 leading-relaxed">
+                  <div className="px-4 sm:px-6 pb-4 sm:pb-5 text-sm sm:text-base text-slate-400 leading-relaxed">
                     {faq.answer}
                   </div>
                 </div>
@@ -649,30 +720,53 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="relative z-10 py-32 border-t border-slate-800/50">
-        <div className="max-w-4xl mx-auto px-6 text-center animate-fade-in-up">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Ready to Take Control of Your APIs?
-          </h2>
-          <p className="text-xl text-slate-400 mb-12">
-            Join hundreds of developers who trust API Analytics for their
-            monitoring needs.
-          </p>
-          
+      {/* CTA Section - Redesigned */}
+      <section className="relative z-10 py-20 sm:py-32 border-t border-slate-800/50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <div className="relative">
+            {/* Decorative elements */}
+            <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-32 h-32 bg-orange-500/20 rounded-full blur-3xl" />
+
+            <div className="relative animate-fade-in-up">
+              <MessageCircle className="w-12 h-12 sm:w-16 sm:h-16 text-orange-400 mx-auto mb-6 animate-pulse" />
+
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 px-4">
+                Still Wondering How It Works?
+              </h2>
+
+              <p className="text-base sm:text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed px-4">
+                Our team is here to help you get started and answer any
+                questions you might have about API monitoring.
+              </p>
+
+              <button
+                onClick={handleContactUs}
+                className="group inline-flex items-center space-x-3 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white rounded-lg font-semibold text-base sm:text-lg transition-all hover:scale-105 shadow-lg shadow-orange-500/25"
+              >
+                <span>Contact Our Team</span>
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+
+              <p className="text-xs sm:text-sm text-slate-500 mt-6">
+                Get a response within 24 hours
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="relative z-10 border-t border-slate-800/50 py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
             <div className="animate-fade-in-up">
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
-                  <Activity className="w-6 h-6 text-white" />
+                <div className="w-10 h-10 bg-orange-400 rounded-lg flex items-center justify-center">
+                  <Activity className="w-6 h-6 text-black" />
                 </div>
-                <span className="text-xl font-bold">API Analytics</span>
+                <span className="text-xl font-bold text-orange-400">
+                  ApiDeck
+                </span>
               </div>
               <p className="text-slate-400 text-sm">
                 The modern way to monitor and analyze your API performance.
@@ -683,26 +777,32 @@ const LandingPage = () => {
               className="animate-fade-in-up"
               style={{ animationDelay: "0.1s" }}
             >
-              <h4 className="font-semibold mb-4">Product</h4>
+              <h4 className="font-semibold mb-4 text-base sm:text-lg">
+                Product
+              </h4>
               <ul className="space-y-2 text-slate-400 text-sm">
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <button
+                    onClick={() => smoothScrollTo("features")}
+                    className="hover:text-white transition-colors"
+                  >
                     Features
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <button
+                    onClick={() => smoothScrollTo("pricing")}
+                    className="hover:text-white transition-colors"
+                  >
                     Pricing
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a
+                    href="/docs"
+                    className="hover:text-white transition-colors"
+                  >
                     Documentation
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    API Reference
                   </a>
                 </li>
               </ul>
@@ -712,27 +812,28 @@ const LandingPage = () => {
               className="animate-fade-in-up"
               style={{ animationDelay: "0.2s" }}
             >
-              <h4 className="font-semibold mb-4">Company</h4>
+              <h4 className="font-semibold mb-4 text-base sm:text-lg">
+                Company
+              </h4>
               <ul className="space-y-2 text-slate-400 text-sm">
                 <li>
                   <a href="#" className="hover:text-white transition-colors">
                     About
                   </a>
                 </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Blog
-                  </a>
-                </li>
+
                 <li>
                   <a href="#" className="hover:text-white transition-colors">
                     Careers
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <button
+                    onClick={handleContactUs}
+                    className="hover:text-white transition-colors"
+                  >
                     Contact
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>
@@ -741,7 +842,7 @@ const LandingPage = () => {
               className="animate-fade-in-up"
               style={{ animationDelay: "0.3s" }}
             >
-              <h4 className="font-semibold mb-4">Legal</h4>
+              <h4 className="font-semibold mb-4 text-base sm:text-lg">Legal</h4>
               <ul className="space-y-2 text-slate-400 text-sm">
                 <li>
                   <a href="#" className="hover:text-white transition-colors">
@@ -758,23 +859,23 @@ const LandingPage = () => {
                     Security
                   </a>
                 </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Compliance
-                  </a>
-                </li>
               </ul>
             </div>
           </div>
+          <div className="flex justify-end mr-8 mb-3 ">
+            <span className="text-orange-400">
+              Ensure your APIs never go down again.
+            </span>
+          </div>
 
           <div
-            className="pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between animate-fade-in-up"
+            className="pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between animate-fade-in-up space-y-4 md:space-y-0"
             style={{ animationDelay: "0.4s" }}
           >
-            <p className="text-slate-400 text-sm">
+            <p className="text-slate-400 text-xs sm:text-sm text-center md:text-left">
               © 2025 API Analytics. All rights reserved.
             </p>
-            <div className="flex items-center space-x-6 mt-4 md:mt-0">
+            <div className="flex items-center space-x-6">
               <a
                 href="https://x.com/kishoraman21"
                 className="text-slate-400 hover:text-white transition-all duration-300 hover:scale-125"
@@ -788,7 +889,7 @@ const LandingPage = () => {
                 <Github className="w-5 h-5" />
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com/in/aman-kishor-profile/"
                 className="text-slate-400 hover:text-white transition-all duration-300 hover:scale-125"
               >
                 <Linkedin className="w-5 h-5" />
@@ -799,6 +900,4 @@ const LandingPage = () => {
       </footer>
     </div>
   );
-};
-
-export default LandingPage;
+}

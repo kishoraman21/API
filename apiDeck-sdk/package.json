@@ -1,0 +1,15 @@
+{
+  "name": "apideck",
+  "version": "1.0.0",
+  "description": "SDK to track API usage and performance",
+  "main": "index.js",
+  "author": "Aman Kishor",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.12.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+
+}

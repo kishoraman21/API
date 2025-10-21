@@ -5,6 +5,7 @@ import { Activity, ArrowLeft, Loader2, LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import {toast} from "react-hot-toast"
+import logo from "../logo.svg"
 
 export default function LoginPage() {
   const [user, setUser] = useState({
@@ -52,10 +53,10 @@ export default function LoginPage() {
       callbackUrl: "/dashboard",
     });
   };
-
-  const handleBackToHome = () => {
+ const handleBackToHome = () => {
     router.push("/");
   };
+ 
 
   return (
     <div className="min-h-screen bg-slate-950 text-white overflow-hidden relative">
@@ -70,7 +71,7 @@ export default function LoginPage() {
         >
           <ArrowLeft className="w-5 h-5 text-slate-400 group-hover:text-orange-400 transition-colors" />
           <span className="text-slate-400 group-hover:text-white transition-colors">
-            Back to Home
+            Back
           </span>
         </button>
       </div>
@@ -82,11 +83,8 @@ export default function LoginPage() {
           <div className="bg-slate-900/80 backdrop-blur-sm border border-slate-800 rounded-2xl p-8 shadow-2xl">
             {/* Logo Section Inside Card */}
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl mb-4">
-                <Activity
-                  className="w-8 h-8 text-slate-900"
-                  strokeWidth={2.5}
-                />
+              <div className="inline-flex items-center justify-center w-22 h-18 bg-transparent">
+                <img src={logo.src} alt="ApiDeck Logo"/>
               </div>
               <h1 className="text-3xl font-bold mb-2 text-orange-400">
                 Welcome Back
