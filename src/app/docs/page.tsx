@@ -273,7 +273,7 @@ const DocsPage = () => {
             {/* Installation Section */}
             <section
               id="installation"
-              ref={(el) => (sectionRefs.current["installation"] = el)}
+              ref={(el) => {sectionRefs.current["installation"] = el; }}
             >
               <div className="space-y-8">
                 <div>
@@ -351,7 +351,7 @@ app.use(
             {/* Configuration Section */}
             <section
               id="configuration"
-              ref={(el) => (sectionRefs.current["configuration"] = el)}
+              ref={(el) => {sectionRefs.current["configuration"] = el; }}
             >
               <div className="space-y-8">
                 <div>
@@ -419,7 +419,7 @@ app.use(
             {/* Pricing Section */}
             <section
               id="pricing"
-              ref={(el) => (sectionRefs.current["pricing"] = el)}
+              ref={(el) => {sectionRefs.current["pricing"] = el;}}
             >
               <div className="space-y-8">
                 <div>
@@ -546,7 +546,7 @@ app.use(
             </section>
 
             {/* FAQs Section */}
-            <section id="faqs" ref={(el) => (sectionRefs.current["faqs"] = el)}>
+            <section id="faqs" ref={(el) => {sectionRefs.current["faqs"] = el; }}>
               <div className="space-y-8">
                 <div>
                   <h1 className="text-4xl font-bold text-white mb-4">FAQs</h1>
