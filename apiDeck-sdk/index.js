@@ -41,12 +41,10 @@ export function apiTracker({ apikey, trackerUrl }) {
           ip: req.ip,
         });
       } catch (err) {
-        // Avoid breaking the main API due to tracking issues
         console.error("[API Tracker] Logging failed:", err.message);
       }
     });
 
-    // Move to the next middleware or route handler
     next();
   };
 }
