@@ -255,6 +255,21 @@ const DocsPage = () => {
               </div>
             </section>
 
+            <div className="pt-4">
+                   <h2 className="text-2xl font-bold text-white mb-4">
+                    Get Your API Key
+                  </h2>
+                  <p className="text-gray-300 mb-4">
+                   1. Signup and create an APiDeck account.
+                  </p>
+                  <p className="text-gray-300 mb-4">
+                    2. Log in to your dashboard. Your unique apikey will be automatically generated and displayed.
+                  </p>
+                  <p className="text-gray-300 mb-4">
+                  3. Now use this apikey in the backend setup.
+                  </p>
+                </div>
+
             {/* Installation Section */}
             <section
               id="installation"
@@ -298,6 +313,10 @@ const DocsPage = () => {
                   </div>
                 </div>
 
+
+                
+
+
                 <div className="pt-4">
                   <h2 className="text-2xl font-bold text-white mb-4">
                     Quick Setup
@@ -312,14 +331,14 @@ const DocsPage = () => {
                     </span>
                   </div>
                   <div className="bg-black rounded-b-lg p-4">
-                    <pre className="text-gray-400 font-mono text-sm overflow-x-auto">
+                    <pre className="text-green-400 font-mono text-sm overflow-x-auto">
                       {`
 import { apiTracker } from "apideck";
 
 app.use(
   apiTracker({
     apikey: "YOUR_API_KEY",                 
-    trackerUrl: "APIDECK_BACKEND_URL", 
+    trackerUrl: "APIDECK_URL", 
   })
 );
 `}

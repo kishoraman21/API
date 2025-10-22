@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Activity, ArrowLeft, Loader2, LogIn } from "lucide-react";
+import {  ArrowLeft, Loader2, LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import {toast} from "react-hot-toast"

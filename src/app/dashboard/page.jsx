@@ -73,7 +73,7 @@ const APIAnalyticsDashboard = () => {
 
   const handleLogout = () => {
     signOut({ callbackUrl: "/" });
-    toast.success("User Logged out successfully");
+    toast.success("User logged out successfully");
   };
 
   const handleCopyApiKey = async () => {

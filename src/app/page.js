@@ -18,6 +18,7 @@ import {
 import dashboard from "./dashboard.png";
 import setup from "./sdksetup.png";
 import logo from "./logo2.svg";
+import { useRouter } from "next/navigation";
 
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState(null);
@@ -125,7 +126,7 @@ export default function LandingPage() {
     {
       question: "How do I integrate API Analytics with my application?",
       answer:
-        "Integration is simple! Install our SDK via npm, add a single line of code to initialize it with your API key, and you're ready to go. We support Node.js, Python, Ruby, Go, and more. Full documentation is available for all platforms.",
+        "Integration is simple! Install our SDK via npm, add a single line of code to initialize it with your API key, and you're ready to go. We currenlty support Node.js. Full documentation is available .",
     },
     {
       question: "What happens if I exceed my plan limits?",
@@ -140,12 +141,12 @@ export default function LandingPage() {
     {
       question: "Is my API data secure?",
       answer:
-        "Absolutely! We use end-to-end encryption, SOC 2 Type II certified infrastructure, and never store sensitive request/response bodies unless explicitly configured. Your data privacy is our top priority.",
+        "Absolutely! We use end-to-end encryption,  and never store sensitive request/response bodies unless explicitly configured. Your data privacy is our top priority.",
     },
     {
-      question: "Can I monitor multiple APIs or environments?",
+      question: "What languages and frameworks are supported?",
       answer:
-        "Yes! You can create separate projects for different APIs or environments (production, staging, development). Each project has its own API key and isolated data.",
+        "ApiDeck currently supports Node.js (Express.js framework). Support for additional frameworks such as Fastify, Koa, and NestJS, as well as other languages like Python and Go, is planned for future updates.",
     },
     {
       question: "Do you offer custom enterprise solutions?",
@@ -153,16 +154,18 @@ export default function LandingPage() {
         "Yes! Enterprise plans include custom integrations, on-premise deployment options, dedicated support, and SLA guarantees. Contact our sales team to discuss your specific requirements.",
     },
   ];
-
+  const router = useRouter();
   const handleGetStarted = () => {
-    window.location.href = "/login";
+    router.push("/login");
   };
 
   const handleContactUs = () => {
-    window.location.href = "/contactus";
+    // router.push("/contactus");
+    window.location.href = "/contactus"
   };
   const docsPage = () => {
-    window.location.href = "/docs";
+    // router.push("/docs");
+    window.location.href = "/docs"
   };
 
   return (
@@ -341,14 +344,12 @@ export default function LandingPage() {
       `}</style>
 
       {/* Navigation */}
-      <nav className="relative z-10 bg-black/80 backdrop-blur-md border-b border-gray-800/30">
+      <nav className="relative z-[500] bg-black/80 backdrop-blur-md border-b border-gray-800/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center space-x-2 animate-fade-in-up">
-              {/* <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded flex items-center justify-center">
-                <Activity className="w-5 h-5 text-black" />
-              </div> */}
+              
               <div className="w-11 h-12 bg-transparent rounded flex items-center justify-center">
                 <img src={logo.src} alt="ApiDeck Logo" />
               </div>
@@ -364,12 +365,7 @@ export default function LandingPage() {
               style={{ animationDelay: "0.2s" }}
             >
               <div className="flex items-center space-x-8">
-                {/* <a
-                  href="#"
-                  className="nav-link text-gray-300 hover:text-white transition-colors text-sm font-medium uppercase tracking-wide"
-                >
-                  DOCS
-                </a> */}
+               
                 <button
                   onClick={() => smoothScrollTo("pricing")}
                   className="nav-link text-gray-300 hover:text-white transition-colors text-sm font-medium uppercase tracking-wide"
@@ -420,40 +416,51 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        <div
-          className={`mobile-menu ${
-            mobileMenuOpen ? "open" : ""
-          } fixed top-[73px] right-0 w-64 h-[calc(100vh-73px)] bg-gray-950 border-l border-gray-800 md:hidden z-50 shadow-2xl`}
-        >
-          <div className="flex flex-col p-6 space-y-6">
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                setMobileMenuOpen(false);
-              }}
-              className="text-gray-300 hover:text-white transition-colors text-base font-medium uppercase tracking-wide py-2 border-b border-gray-700"
-            >
-              DOCS
-            </a>
-            <button
-              onClick={() => smoothScrollTo("pricing")}
-              className="text-left text-gray-300 hover:text-white transition-colors text-base font-medium uppercase tracking-wide py-2 border-b border-gray-700"
-            >
-              PRICING
-            </button>
-            <button
-              onClick={() => {
-                handleContactUs();
-                setMobileMenuOpen(false);
-              }}
-              className="text-left text-gray-300 hover:text-white transition-colors text-base font-medium uppercase tracking-wide py-2 border-b border-gray-700"
-            >
-              SUPPORT
-            </button>
+       {/* Mobile Menu */}
+       {mobileMenuOpen && (
+          <div 
+            className="fixed top-[73px] right-0 w-64 h-auto bg-black/98 backdrop-blur-xl border-l-2 border-t-2 border-orange-500/50 md:hidden z-[500] shadow-2xl shadow-orange-500/20 rounded-tl-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex flex-col p-6 space-y-3">
+              {/* DOCS Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  window.location.href = "/docs";
+                }}
+                className="w-full text-left text-gray-300 hover:text-white hover:bg-orange-500/10 active:bg-orange-500/20 transition-all text-base font-medium uppercase tracking-wide py-4 px-4 border border-gray-700/50 hover:border-orange-500/50 cursor-pointer rounded-lg touch-manipulation"
+              >
+                DOCS
+              </button>
+              
+              {/* PRICING Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setTimeout(() => smoothScrollTo("pricing"), 150);
+                }}
+                className="w-full text-left text-gray-300 hover:text-white hover:bg-orange-500/10 active:bg-orange-500/20 transition-all text-base font-medium uppercase tracking-wide py-4 px-4 border border-gray-700/50 hover:border-orange-500/50 cursor-pointer rounded-lg touch-manipulation"
+              >
+                PRICING
+              </button>
+              
+              {/* SUPPORT Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  window.location.href = "/contactus";
+                }}
+                className="w-full text-left text-gray-300 hover:text-white hover:bg-orange-500/10 active:bg-orange-500/20 transition-all text-base font-medium uppercase tracking-wide py-4 px-4 border border-gray-700/50 hover:border-orange-500/50 cursor-pointer rounded-lg touch-manipulation"
+              >
+                SUPPORT
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </nav>
 
       {/* Hero Section */}
@@ -517,7 +524,7 @@ export default function LandingPage() {
                     loading="lazy"
                     src={dashboard.src}
                     alt="SnapAlert Dashboard Settings"
-                    className="w-full h-full relative object-cover p-4  "
+                    className="w-full h-full relative object-cover p-6 "
                   />
                 </div>
               </div>
@@ -604,7 +611,7 @@ export default function LandingPage() {
                 <div key={i} className={cardClasses}>
                   {/* Coming Soon Badge */}
                   {isComingSoon && (
-                    <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-20 animate-float">
+                    <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-20 animate-pulse">
                       COMING SOON
                     </div>
                   )}
