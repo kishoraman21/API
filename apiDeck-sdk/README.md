@@ -26,6 +26,7 @@
 
 ````bash
 npm install apideck
+```
 
 ---
 
@@ -56,6 +57,7 @@ app.use(
     trackerUrl: "APIDECK_URL"
   })
 );
+```
 
 CommonJS (require)
 
@@ -71,7 +73,7 @@ app.use(
     trackerUrl: "YOUR_SERVER_URL"
   })
 );
-
+```
 ---
 
 ## 📖 API Reference
@@ -117,6 +119,7 @@ Each API request automatically sends structured data to your tracker backend.
   "response_time_ms": 142,
   "ip": "::1"
 }
+```
 
 ---
 
@@ -135,4 +138,4 @@ ApiDeck works seamlessly with:
 <div align="center">
   <p>Questions? <strong>kishoraman2121@gmail.com</strong></p>
 </div>
-````
+
