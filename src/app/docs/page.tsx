@@ -210,7 +210,7 @@ const DocsPage = () => {
             {/* Getting Started Section */}
             <section
               id="getting-started"
-              ref={(el) => (sectionRefs.current["getting-started"] = el)}
+              ref={(el) => { sectionRefs.current["getting-started"] = el; }}
             >
               <div className="space-y-8">
                 <div>
@@ -256,7 +256,7 @@ const DocsPage = () => {
             </section>
 
             <div className="pt-4">
-                   <h2 className="text-2xl font-bold text-white mb-4">
+                   <h2 className="text-3xl font-bold text-white mb-4">
                     Get Your API Key
                   </h2>
                   <p className="text-gray-300 mb-4">

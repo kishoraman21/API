@@ -19,6 +19,7 @@ import dashboard from "./dashboard.png";
 import setup from "./sdksetup.png";
 import logo from "./logo2.svg";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState(null);
@@ -351,7 +352,8 @@ export default function LandingPage() {
             <div className="flex items-center space-x-2 animate-fade-in-up">
               
               <div className="w-11 h-12 bg-transparent rounded flex items-center justify-center">
-                <img src={logo.src} alt="ApiDeck Logo" />
+                {/* <img src={logo.src} alt="ApiDeck Logo" /> */}
+                <Image src={logo.src} alt="Apideck Logo" width={70} height={70} />
               </div>
 
               <span className="text-base sm:text-lg font-bold text-white tracking-tight">
@@ -501,9 +503,9 @@ export default function LandingPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-2xl blur-3xl opacity-50 group-hover:opacity-70 transition-opacity" />
               <div className="relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl hover:scale-[1.01] transition-transform duration-500">
                 <div className="bg-gray-800/30 flex items-center justify-center">
-                  <img
-                    width="400"
-                    height="400"
+                  <Image
+                    width={400}
+                    height={400}
                     loading="lazy"
                     src={setup.src}
                     alt="SnapAlert Setup Code"
@@ -518,9 +520,9 @@ export default function LandingPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-2xl blur-3xl opacity-50 group-hover:opacity-70 transition-opacity" />
               <div className="relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl hover:scale-[1.01] transition-transform duration-500">
                 <div className="bg-gray-800/30 flex items-center justify-center">
-                  <img
-                    width="500"
-                    height="600"
+                  <Image
+                    width={500}
+                    height={600}
                     loading="lazy"
                     src={dashboard.src}
                     alt="SnapAlert Dashboard Settings"
