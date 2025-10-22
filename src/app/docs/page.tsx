@@ -245,7 +245,7 @@ const DocsPage = () => {
                           Note
                         </h3>
                         <p className="text-gray-300">
-                          You'll need to sign up for an ApiDeck account to get
+                          You&apos;ll need to sign up for an ApiDeck account to get
                           your API key before proceeding with the installation.
                         </p>
                       </div>
@@ -588,8 +588,8 @@ app.use(
                     <p className="text-gray-300">
                       Absolutely! ApiDeck is designed for production
                       environments. Our SDK has minimal performance overhead and
-                      includes features like sampling rates to ensure it doesn't
-                      impact your application's performance.
+                      includes features like sampling rates to ensure it doesn&apos;t
+                      impact your application&apos;s performance.
                     </p>
                   </div>
 
