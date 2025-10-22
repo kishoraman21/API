@@ -24,7 +24,7 @@
 
 ## 🚀 Installation
 
-````bash
+```bash
 npm install apideck
 ```
 
