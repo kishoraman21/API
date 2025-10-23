@@ -6,12 +6,20 @@
 
 **Lightweight API Usage Tracking SDK for Node.js**
 
-<p>     <a href="https://www.npmjs.com/package/apideck">
-<img src="https://img.shields.io/npm/v/apideck?style=flat-square&color=00BFFF" alt="npm version"/></a> 
-    <a href="https://www.npmjs.com/package/apideck"><img src="https://img.shields.io/npm/dm/apideck?style=flat-square&color=1E90FF" alt="downloads"/></a>  
-   <a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-Compatible-228B22?style=flat-square" alt="Node.js"/></a>    
-  <a href="./LICENSE"><img src="https://img.shields.io/npm/l/apideck?style=flat-square&color=32CD32" alt="License"/></a>
-     </p>     <p>Track API requests, monitor response times, and analyze performance — effortlessly.</p>
+<p align="center">
+  <a href="https://www.npmjs.com/package/apideck-tracker">
+    <img src="https://img.shields.io/npm/v/apideck-tracker?style=flat-square&color=00BFFF" alt="npm version"/>
+  </a>
+  <a href="https://www.npmjs.com/package/apideck-tracker">
+    <img src="https://img.shields.io/badge/downloads-75%2Fmonth-1E90FF?style=flat-square" alt="downloads"/>
+  </a>
+  <a href="https://nodejs.org">
+    <img src="https://img.shields.io/badge/Node.js-Compatible-228B22?style=flat-square" alt="Node.js"/>
+  </a>
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-32CD32?style=flat-square" alt="License"/>
+  </a>
+</p>
 
 </div>
 
