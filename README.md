@@ -30,7 +30,7 @@
 ## 🚀 Installation
 
 ```bash
-npm install apideck
+npm install apideck-tracker
 ```
 
 ---
@@ -53,7 +53,7 @@ ES Module(import)
 
 ```bash
 import express from "express";
-import { apiTracker } from "apideck";
+import { apiTracker } from "apideck-tracker";
 
 const app = express();
 
@@ -69,7 +69,7 @@ CommonJS (require)
 
 ```bash
 const express = require("express");
-const { apiTracker } = require("apideck");
+const { apiTracker } = require("apideck-tracker");
 
 const app = express();
 

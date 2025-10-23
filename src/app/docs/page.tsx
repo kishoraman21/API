@@ -294,7 +294,7 @@ const DocsPage = () => {
                     </div>
                     <div className="bg-black rounded-b-lg p-4">
                       <code className="text-green-400 font-mono text-sm">
-                        npm install apideck
+                        npm install apideck-tracker
                       </code>
                     </div>
                   </div>
@@ -307,7 +307,7 @@ const DocsPage = () => {
                     </div>
                     <div className="bg-black rounded-b-lg p-4">
                       <code className="text-green-400 font-mono text-sm">
-                        yarn add apideck
+                        yarn add apideck-tracker
                       </code>
                     </div>
                   </div>
@@ -333,7 +333,7 @@ const DocsPage = () => {
                   <div className="bg-black rounded-b-lg p-4">
                     <pre className="text-green-400 font-mono text-sm overflow-x-auto">
                       {`
-import { apiTracker } from "apideck";
+import { apiTracker } from "apideck-tracker";
 
 app.use(
   apiTracker({

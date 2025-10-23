@@ -1,9 +1,3 @@
-// ------------------------------------------------------------
-// API Tracker SDK
-// Author: Aman Kishor
-// Description: Middleware to log and track API usage & performance
-// Version: 1.0.0
-// ------------------------------------------------------------
 
 import axios from "axios";
 
