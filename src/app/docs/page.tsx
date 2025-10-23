@@ -338,7 +338,7 @@ import { apiTracker } from "apideck";
 app.use(
   apiTracker({
     apikey: "YOUR_API_KEY",                 
-    trackerUrl: "APIDECK_URL", 
+    trackerUrl: "https://apideck.site", 
   })
 );
 `}

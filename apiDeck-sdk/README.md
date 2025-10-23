@@ -6,7 +6,12 @@
 
 **Lightweight API Usage Tracking SDK for Node.js**
 
-<p>     <a href="https://www.npmjs.com/package/apideck"><img src="https://img.shields.io/npm/v/apideck?style=flat-square&color=00BFFF" alt="npm version"/></a>     <a href="https://www.npmjs.com/package/apideck"><img src="https://img.shields.io/npm/dm/apideck?style=flat-square&color=1E90FF" alt="downloads"/></a>     <a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-Compatible-228B22?style=flat-square" alt="Node.js"/></a>     <a href="./LICENSE"><img src="https://img.shields.io/npm/l/apideck?style=flat-square&color=32CD32" alt="License"/></a>   </p>     <p>Track API requests, monitor response times, and analyze performance — effortlessly.</p>
+<p>     <a href="https://www.npmjs.com/package/apideck">
+<img src="https://img.shields.io/npm/v/apideck?style=flat-square&color=00BFFF" alt="npm version"/></a> 
+    <a href="https://www.npmjs.com/package/apideck"><img src="https://img.shields.io/npm/dm/apideck?style=flat-square&color=1E90FF" alt="downloads"/></a>  
+   <a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-Compatible-228B22?style=flat-square" alt="Node.js"/></a>    
+  <a href="./LICENSE"><img src="https://img.shields.io/npm/l/apideck?style=flat-square&color=32CD32" alt="License"/></a>
+     </p>     <p>Track API requests, monitor response times, and analyze performance — effortlessly.</p>
 
 </div>
 
@@ -34,7 +39,7 @@ npm install apideck
 
 To use ApiDeck, you need an account and an API key.
 
-- Go to [https://your-apideck-domain.com] and create an account.
+- Go to [https://apideck.site/] and create an account.
 
 - Log in to your dashboard. Your unique apikey will be automatically generated and displayed.
 
@@ -43,6 +48,7 @@ To use ApiDeck, you need an account and an API key.
 ## 🔧 Quick Start
 
 Choose the syntax for your project.
+
 ES Module(import)
 
 ```bash
@@ -54,7 +60,7 @@ const app = express();
 app.use(
   apiTracker({
     apikey: "YOUR_API_KEY",
-    trackerUrl: "APIDECK_URL"
+    trackerUrl: "https://apideck.site"
   })
 );
 ```
@@ -70,7 +76,7 @@ const app = express();
 app.use(
   apiTracker({
     apikey: "YOUR_API_KEY_FROM_SERVER",
-    trackerUrl: "YOUR_SERVER_URL"
+    trackerUrl: "https://apideck.site"
   })
 );
 ```

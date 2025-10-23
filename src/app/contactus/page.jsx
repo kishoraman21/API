@@ -27,7 +27,7 @@ export default function ContactPage() {
         >
           <ArrowLeft className="w-5 h-5 text-slate-400 group-hover:text-orange-400 transition-colors" />
           <span className="text-slate-400 group-hover:text-white transition-colors">
-            Back to Home
+            Back 
           </span>
         </button>
       </div>
