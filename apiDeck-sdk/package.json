@@ -15,9 +15,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/amankishor/apideck-sdk.git"
+    "url": "https://github.com/kishoraman21/ApiDeck"
   },
-  "homepage": "https://github.com/amankishor/apideck-sdk#readme",
+  "homepage": "https://github.com/kishoraman21/ApiDeck/blob/main/README.md",
   "author": "Aman Kishor",
   "license": "MIT",
   "dependencies": {
