@@ -1,5 +1,5 @@
 {
-  "name": "apideck-sdk",
+  "name": "apideck",
   "version": "1.0.0",
   "description": "Lightweight Node.js middleware to track API usage, response time, and performance analytics.",
   "main": "index.js",
