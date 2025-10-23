@@ -892,7 +892,7 @@ export default function LandingPage() {
                 <Twitter className="w-5 h-5" />
               </a>
               <a
-                href="https://github.com/kishoraman21"
+                href="https://github.com/kishoraman21/ApiDeck"
                 className="text-slate-400 hover:text-white transition-all duration-300 hover:scale-125"
               >
                 <Github className="w-5 h-5" />
